@@ -1,6 +1,6 @@
 task: detect
 mode: train
-model: yolov10n.pt
+model: F:/AIO/helmetdetectionyolov10/yolov10n.pt
 data: F:/AIO/helmetdetectionyolov10/dataset/data.yaml
 epochs: 50
 time: null
@@ -70,8 +70,8 @@ simplify: false
 opset: null
 workspace: 4
 nms: false
-lr0: 0.01
-lrf: 0.01
+lr0: 0.001
+lrf: 0.001
 momentum: 0.937
 weight_decay: 0.0005
 warmup_epochs: 3.0
