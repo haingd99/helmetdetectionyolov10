@@ -20,38 +20,49 @@ with st.form("img_upload"):
     submitted = st.form_submit_button("Submit")
     
     if submitted and img is not None:
+        st.write(f"Image Name: {img.name} - Image Type: {img.type} - Image Size: {img.size/1024: .0f} KB ")
         # Read the image
         image = Image.open(img)
         image_np = np.array(image)
+
         if image_np.shape[2] == 4:
             image_np = cv2.cvtColor(image_np, cv2.COLOR_BGRA2RGB)
+
+        if img.type == 'image/jpeg':
+            image_np = cv2.cvtColor(image_np, cv2.COLOR_BGR2RGB)
+
         # Perform object detection
         results = model.predict(source=image_np, conf=conf)
-        
-        # Draw bounding boxes on the image
-        for result in results:
-            for box in result.boxes:
-                # Get bounding box coordinates and class
-                x1, y1, x2, y2 = box.xyxy[0].cpu().numpy().astype(int)
-                cls = box.cls
 
-                # Draw rectangle
-                cv2.rectangle(image_np, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        img_result = results[0].plot()
+        img_result = cv2.cvtColor(img_result, cv2.COLOR_BGR2RGB)
+        img_show = Image.fromarray(img_result)
+        st.image(img_show)
 
-                # Put the score
-                score = float(box.conf.cpu().numpy())
+        # # Draw bounding boxes on the image
+        # for result in results:
+        #     for box in result.boxes:
+        #         # Get bounding box coordinates and class
+        #         x1, y1, x2, y2 = box.xyxy[0].cpu().numpy().astype(int)
+        #         cls = box.cls
 
-                # Put label
-                label = f"{model.names[int(cls)]} - {score:.2f}"
-                cv2.putText(image_np, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        #         # Draw rectangle
+        #         cv2.rectangle(image_np, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
-        # Convert the image from BGR to RGB (since OpenCV uses BGR format)
-        image_np = cv2.cvtColor(image_np, cv2.COLOR_BGR2RGB)
+        #         # Put the score
+        #         score = float(box.conf.cpu().numpy())
 
-        # Display the image with bounding boxes
-        st.image(image_np, caption='Processed Image.', use_column_width=True)
+        #         # Put label
+        #         label = f"{model.names[int(cls)]}: {score:.2f}"
+        #         cv2.putText(image_np, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-        # Optionally, display detection details
+        # # Convert the image from BGR to RGB (since OpenCV uses BGR format)
+        # image_np = cv2.cvtColor(image_np, cv2.COLOR_BGR2RGB)
+
+        # # Display the image with bounding boxes
+        # st.image(image_np, caption='Processed Image.', use_column_width=True)
+
+        # # Optionally, display detection details
         st.write(f"The number of objects detected: {len(results[0].boxes)}")
         for result in results:
             for box in result.boxes:
