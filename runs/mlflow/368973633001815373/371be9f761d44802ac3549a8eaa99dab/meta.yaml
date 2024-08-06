@@ -1,0 +1,15 @@
+artifact_uri: file:///d:/Data/AIO/helmetdetectionyolov10/runs/mlflow/368973633001815373/371be9f761d44802ac3549a8eaa99dab/artifacts
+end_time: 1719465342352
+entry_point_name: ''
+experiment_id: '368973633001815373'
+lifecycle_stage: active
+run_id: 371be9f761d44802ac3549a8eaa99dab
+run_name: train8
+run_uuid: 371be9f761d44802ac3549a8eaa99dab
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1719464929599
+status: 3
+tags: []
+user_id: HP ENVY
